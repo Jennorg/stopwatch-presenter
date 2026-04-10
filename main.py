@@ -11,7 +11,7 @@ def main():
     
     controller = ControllerWindow(logic, presenter)
     controller.show()
-    presenter.show()
+    # El presentador se muestra solo cuando el moderador inicia la proyección.
     sys.exit(app.exec())
 
 if __name__ == "__main__":

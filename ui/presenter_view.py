@@ -42,6 +42,13 @@ class PresenterWindow(QWidget):
             self.blink_timer.stop()
             self.label.setStyleSheet(f"color: {color}; font-size: 300px; font-family: 'Consolas'; font-weight: bold;")
 
+    def stop_presenting(self):
+        self.blink_timer.stop()
+        self.hide()
+        self.label.setStyleSheet(f"color: white; font-size: 300px; font-family: 'Consolas'; font-weight: bold;")
+        self.current_color = "white"
+        self.is_visible = True
+
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Escape:
             self.showNormal()
