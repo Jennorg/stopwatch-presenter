@@ -9,6 +9,7 @@ class StopwatchLogic:
         self.target_seconds = 0
         self.yellow_limit_secs = 0
         self.red_limit_secs = 0
+        self.sound_played = {"yellow": False, "red": False, "end": False}
 
     def set_countdown(self, h, m, s, y_h, y_m, y_s, r_h, r_m, r_s):
         self.target_seconds = (h * 3600) + (m * 60) + s
@@ -45,6 +46,25 @@ class StopwatchLogic:
         self.start_time = 0
         self.elapsed_before_pause = 0
         self.is_running = False
+        self.sound_played = {"yellow": False, "red": False, "end": False}
+
+    def check_sound_trigger(self):
+        """Retorna qué sonido debe sonar si no se ha sonado aún."""
+        if not self.is_countdown or not self.is_running: return None
+        
+        rem = self.get_remaining_seconds()
+        
+        if rem <= 0 and not self.sound_played["end"]:
+            self.sound_played["end"] = True
+            return "end"
+        if rem <= self.red_limit_secs and not self.sound_played["red"] and rem > 0:
+            self.sound_played["red"] = True
+            return "red"
+        if rem <= self.yellow_limit_secs and not self.sound_played["yellow"] and rem > self.red_limit_secs:
+            self.sound_played["yellow"] = True
+            return "yellow"
+            
+        return None
 
     def get_format_time(self):
         rem = self.get_remaining_seconds()
